@@ -10,7 +10,6 @@ const role = process.argv[2];
 console.log(`Your role is ${role}`);
 
 const stdlib = loadStdlib(process.env);
-// stdlib.setProviderByName('TestNet');
 console.log(`The consensus network is ${stdlib.connector}.`);
 
 const deadline = { ETH: 250, ALGO: 100, CFX: 1000 }[stdlib.connector];
@@ -50,14 +49,8 @@ if (role === 'creator') {
         },
         notify: async (who) => {
             
-            console.log(`I got notified ${who}`);
+            console.log(`${who} just attached to the contract.`);
         },
-        // addToWhitelist: async () => {
-        //     const rAddr = await ask.ask('Paste Recepient Address to Whitelist: ');
-
-        //   //  await stdlib.transfer(accCreator,accAttacher, 1, nft.id);            
-        //     return rAddr
-        // },
         maxParticipants: 5,
         rewardAmount: 1,
         stakeAmount: 1,
@@ -73,20 +66,10 @@ if (role === 'creator') {
 
     await ctc.participants.Creator(creatorInteract);
     
-    // TODO
-    // await ctc.apis.Attacher.reportAttacher();
-
-
-
     console.log('Waiting for a timeout.');
     await stdlib.wait(deadline);
 
     await showBalances(accCreator);
-    await showBalances(accAttacher);
-
-   // await stdlib.transfer(accCreator, accAttacher, 1, nft.id);
-
-  //  await ctc.apis.attacher.requestTimeout();
 
 } else {    
     console.log(`Your address is: ${accAttacher.getAddress()}`);
@@ -99,7 +82,7 @@ if (role === 'creator') {
         await stdlib.transfer(accCreator,accAttacher, 1, nft.id);
         console.log(`I have received the key: ${rck}`);
     } catch (e) {
-        console.log(`Well, something went wrong.`);
+        console.log(`Well, You are not whitelisted.`);
        // console.log(`${e}`)
     }
 

@@ -2,8 +2,6 @@
 
 
 export const main = Reach.App(() => {
-    // setOptions({ untrustworthyMaps: true})
-  
     const A = Participant('Creator', {
         deployed: Fun(true, Null),                                                                                                                
         deadline: UInt,
@@ -46,8 +44,7 @@ export const main = Reach.App(() => {
         .invariant(balance() == 0)
         .while(keepGoing) 
         .api_(B.receiveKey, (who) => {
-            // check(this == A, "I am the admin");
-            check(whitelist.member(who), 'Not authorized')
+            check(whitelist.member(who), 'Not whitelisted')
             return [0, (z) => {
                 z(777);
                 A.interact.notify(this);
